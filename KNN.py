@@ -9,7 +9,7 @@ from operator import itemgetter
 
 import math
 
-
+'''Function to calculate votes for neighbours and return predicted rating'''
 def getResponse(neighbors):
 	classVotes = {}
 	for x in range(len(neighbors)):
@@ -21,18 +21,19 @@ def getResponse(neighbors):
 	sortedVotes = sorted(classVotes.items(), key=itemgetter(1), reverse=True)
 	return sortedVotes[0][0]
 
-def hamdist(str1, str2):
-	diffs = 0
+'''Function to calculate hamming distance between two strings'''
+def hamdist(word1, word2):
+	number_differences = 0
 
-	str1 = str1[0]
-	str2 = str2[0]
+	word1 = word1[0]
+	word2 = word2[0]
 
-	if len(str1) != len(str2):
-		return max(len(str1), len(str2))
-	for ch1, ch2 in zip(str1, str2):
-		if ch1 != ch2:
-			diffs += 1
-	return diffs
+	if len(word1) != len(word2):
+		return max(len(word1), len(word2))
+	for char1, char2 in zip(word1, word2):
+		if char1 != char2:
+			number_differences += 1
+	return number_differences
 
 
 class KNN:
@@ -43,7 +44,7 @@ class KNN:
 		self.data = []
 
 		self.sc = SparkContext.getOrCreate()
-
+	'''Function to convert 5 class labels to 3 class labels if 3 class classification is chosen'''
 	def convert_rating(self, rating):
 		intRating = int(rating[0])
 
@@ -56,7 +57,7 @@ class KNN:
 				return 1
 			else:
 				return 2
-
+	''' Function to load data from csv file and prepare input data structures'''
 	def load_data(self):
 		print ("Loading data fron File:")
 		total_lines = sum([1 for row in open(self.filepath, 'rU')]) - 1
@@ -72,7 +73,7 @@ class KNN:
 					print( str(math.ceil(percent * 100)) + "% complete")
 					percent += 0.1
 
-
+	''' Function to calculate accurancy of KNN model built'''
 	def getAccuracyKNN(self, testSet, predictions):
 		correct = 0
 		for x in range(len(testSet)):
@@ -80,7 +81,7 @@ class KNN:
 				correct += 1
 		return (correct / float(len(testSet))) * 100.0
 
-
+	''' Function to run KNN model'''
 	def run_model(self):
 
 		print("Running KNN model")
@@ -95,51 +96,52 @@ class KNN:
 
 		kMax = k + 30
 
-		nearestNeigboursHAM = test_data.cartesian(training_data).map(lambda x: (x[0], [hamdist(x[0], x[1])] + x[1]))
-		nearestNeigboursSORT = nearestNeigboursHAM.sortBy(lambda x: int(x[1][0])).map(lambda x: (tuple(x[0]), x[1]))
+		hamming_distances_RDD = test_data.cartesian(training_data).map(lambda x: (x[0], [hamdist(x[0], x[1])] + x[1]))
+		hamming_distances_sorted_RDD = hamming_distances_RDD.sortBy(lambda x: int(x[1][0])).map(lambda x: (tuple(x[0]), x[1]))
+		hamming_distances_grouped_RDD = hamming_distances_sorted_RDD.groupByKey()
 
-		nearestNeigboursGROUP = nearestNeigboursSORT.groupByKey()
-
-		nearestNeigbours = nearestNeigboursGROUP.map(lambda x: (x[0], list(x[1])))
+		nearest_neighbours_RDD = hamming_distances_grouped_RDD.map(lambda x: (x[0], list(x[1])))
 
 		while (k <= kMax):
 
-			nearestNeigbours2 = nearestNeigbours.map(lambda x: (x[0], x[1][0:k]))
-			nearestNeigbours3 = nearestNeigbours2.map(lambda x: (x[0], getResponse(x[1])))
+			k_nearest_neighbours_RDD = nearest_neighbours_RDD.map(lambda x: (x[0], x[1][0:k]))
+			predicted_data = k_nearest_neighbours_RDD.map(lambda x: (x[0], getResponse(x[1])))
 
-			testsetfinal = nearestNeigbours3.keys().collect()
-			predicted = nearestNeigbours3.values().collect()
+			test_reviews = predicted_data.keys().collect()
+			predicted_ratings = predicted_data.values().collect()
 
-			accuracy = self.getAccuracyKNN(testsetfinal, predicted)
+			accuracy = self.getAccuracyKNN(test_reviews, predicted_ratings)
 			print("#################")
 			print('Accuracy: for KNN with k '+ repr(k)+ ' is ' + repr(accuracy) + '%')
 			print("#################")
 
 			k=k+5
 
+	'''Function to predict rating for a given review'''
 	def predict_rating(self, review):
 		review_data = self.sc.parallelize(self.data)
 		test_data = self.sc.parallelize([review])
 
 		k = int(math.sqrt(len(self.data))) - 15
 
-		nearestNeigboursHAM = test_data.cartesian(review_data).map(lambda x: (x[0], [hamdist(x[0], x[1])] + x[1]))
-		nearestNeigboursSORT = nearestNeigboursHAM.sortBy(lambda x: int(x[1][0])).map(lambda x: (tuple(x[0]), x[1]))
+		hamming_distances_RDD = test_data.cartesian(review_data).map(lambda x: (x[0], [hamdist(x[0], x[1])] + x[1]))
+		hamming_distances_sorted_RDD = hamming_distances_RDD.sortBy(lambda x: int(x[1][0])).map(lambda x: (tuple(x[0]), x[1]))
 
-		nearestNeigboursGROUP = nearestNeigboursSORT.groupByKey()
+		hamming_distances_grouped_RDD = hamming_distances_sorted_RDD.groupByKey()
 
-		nearestNeigbours = nearestNeigboursGROUP.map(lambda x: (x[0], list(x[1])))
+		nearest_neighbours_RDD = hamming_distances_grouped_RDD.map(lambda x: (x[0], list(x[1])))
 
-		nearestNeigbours2 = nearestNeigbours.map(lambda x: (x[0], x[1][0:k]))
-		nearestNeigbours3 = nearestNeigbours2.map(lambda x: (x[0], getResponse(x[1])))
+		k_nearest_neighbours_RDD = nearest_neighbours_RDD.map(lambda x: (x[0], x[1][0:k]))
+		predicted_data = k_nearest_neighbours_RDD.map(lambda x: (x[0], getResponse(x[1])))
 
-		predicted = nearestNeigbours3.values().collect()
+		predicted_ratings = predicted_data.values().collect()
 
-		return predicted[0]
+		return predicted_ratings[0]
 
 
 if __name__ == "__main__":
 
+	'''Create K Nearest Neighbours model and run'''
 	model = KNN("reviews.csv", 5)
 
 	model.run_model()

@@ -6,6 +6,41 @@ import math
 import csv
 
 from pyspark import SparkContext
+import nltk
+
+
+def get_clean_review(raw_review):
+	PorterStemmer = nltk.stem.PorterStemmer()
+	letters_only = re.sub("[^a-zA-Z]", " ", raw_review)
+	words = letters_only.lower().split()
+	stops = load_stopwords()
+	meaningful_words = [PorterStemmer.stem(w) for w in words if not w in stops]
+	return( " ".join( meaningful_words ))
+
+
+''' function to predict the rating for a given review using the trained model '''
+def predict_class(words, class_vocab_probability, classes, class_probability):
+	actual_class = words[0]
+
+	words = words[1:]
+	
+	predicted_probability = []
+
+    ''' initializing predicted probability to the class probabilities '''
+	for classIndex in range(classes):
+		predicted_probability.append(math.log10(class_probability[classIndex + 1]))
+
+    ''' updating predicted probability by adding conditional probabilities of each word in the given review  '''
+	for i in range(len(words)):
+		for classIndex in range(classes):
+			if words[i] in class_vocab_probability[classIndex]:
+				predicted_probability[classIndex] = predicted_probability[classIndex] + math.log10(class_vocab_probability[classIndex][words[i]])
+
+    ''' updating final rating as the class corresponding to highest predicted probability '''
+	max_probability = max(predicted_probability)
+	predicted_class = predicted_probability.index(max_probability) + 1
+
+	return (actual_class, predicted_class)
 
 class NaiveBayes:
 
@@ -134,29 +169,6 @@ class NaiveBayes:
 		prediction = predict_class(words, self.class_vocab_probability, self.classes, self.class_probability)
 		return prediction[1]
 
-''' function to predict the rating for a given review using the trained model '''
-def predict_class(words, class_vocab_probability, classes, class_probability):
-	actual_class = words[0]
-
-	words = words[1:]
-	
-	predicted_probability = []
-
-    ''' initializing predicted probability to the class probabilities '''
-	for classIndex in range(classes):
-		predicted_probability.append(math.log10(class_probability[classIndex + 1]))
-
-    ''' updating predicted probability by adding conditional probabilities of each word in the given review  '''
-	for i in range(len(words)):
-		for classIndex in range(classes):
-			if words[i] in class_vocab_probability[classIndex]:
-				predicted_probability[classIndex] = predicted_probability[classIndex] + math.log10(class_vocab_probability[classIndex][words[i]])
-
-    ''' updating final rating as the class corresponding to highest predicted probability '''
-	max_probability = max(predicted_probability)
-	predicted_class = predicted_probability.index(max_probability) + 1
-
-	return (actual_class, predicted_class)
 
 if __name__ == "__main__":
 
@@ -165,10 +177,14 @@ if __name__ == "__main__":
 	model.run_model()
 
 	review = ""
-	while (review.lower() != "quit"):
+	while (True):
 		review = input("Please enter a review to predict: ")
-		rating = model.predict_rating(str(review))
+		if review.lower() == "quit":
+			break
+		if review != "":
+			clean_review = get_clean_review(str(review))
+			rating = model.predict_rating(clean_review)
 
-		print("Rating: " + str(rating))
+			print("Rating: " + str(rating))
 
 

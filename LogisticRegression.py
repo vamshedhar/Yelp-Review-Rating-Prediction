@@ -19,6 +19,14 @@ from operator import itemgetter
 from sklearn.linear_model import LogisticRegression as SKLogisticRegression
 
 
+def get_clean_review(raw_review):
+	PorterStemmer = nltk.stem.PorterStemmer()
+	letters_only = re.sub("[^a-zA-Z]", " ", raw_review)
+	words = letters_only.lower().split()
+	stops = load_stopwords()
+	meaningful_words = [PorterStemmer.stem(w) for w in words if not w in stops]
+	return( " ".join( meaningful_words ))
+
 def sigmoid(z):
 		return 1 / (1 + np.exp(-z)) 
 '''Function to check y-label and return 1 for class i and 0 for other classes'''
@@ -176,8 +184,9 @@ if __name__ == "__main__":
 		review = input("Please enter a review to predict: ")
 		if review.lower() == "quit":
 			break
-		if review != "":	
-			rating = model.predict_rating(str(review))
+		if review != "":
+			clean_review = get_clean_review(str(review))
+			rating = model.predict_rating(clean_review)
 
 			print("Rating: " + str(rating))
 

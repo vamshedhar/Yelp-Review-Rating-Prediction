@@ -1,5 +1,6 @@
 from __future__ import print_function
 import csv
+import sys
 
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer, TfidfVectorizer
@@ -17,7 +18,12 @@ import math
 from operator import itemgetter
 
 from sklearn.linear_model import LogisticRegression as SKLogisticRegression
+import re
+from nltk.corpus import stopwords
 
+
+def load_stopwords():
+	return set(stopwords.words("english"))
 
 def get_clean_review(raw_review):
 	PorterStemmer = nltk.stem.PorterStemmer()
@@ -57,7 +63,7 @@ def predict_rating(test_review, beta_all):
 
 '''Function to convert matrix to array'''
 def reduceMatrix(input_matrix):
-	converted_array = np.converted_arraysarray(input_matrix)
+	converted_array = np.asarray(input_matrix)
 	return converted_array[0]
 
 class LogisticRegression:
@@ -79,11 +85,11 @@ class LogisticRegression:
 			return intRating
 		else:
 			if intRating <= 2:
-				return 0
-			elif intRating == 3:
 				return 1
-			else:
+			elif intRating == 3:
 				return 2
+			else:
+				return 3
 
 	''' Function to load data from csv file and prepare input data structures'''
 	def load_data(self):
@@ -163,19 +169,32 @@ class LogisticRegression:
 		print('Accuracy from sk-learn: {0}'.format(clf.score(X_test, y_test)))
 
 	'''Predicting rating for a test review '''
-	def predict_rating(self, review):
+	def predict_new_review_rating(self, review):
 		new_reviews = self.reviews + [review]
 		tfidf_vectorizer = TfidfVectorizer(max_df=0.90, max_features=500, stop_words='english', use_idf=True, tokenizer=nltk.word_tokenize, ngram_range=(2,2))
 		tfidf_data = tfidf_vectorizer.fit_transform(new_reviews)
 		f = tfidf_data.todense()[tfidf_data.shape[0] - 1]
-		return predict(f, self.beta_all)
+		return predict_rating(f, self.beta_all)
 
 
 
 if __name__ == "__main__":
 
+	if len(sys.argv) != 3:
+		print("Please give valid inputs arguments!")
+		print("python Model.py <inputfile> <classcount>")
+		sys.exit()
+
+	filepath = str(sys.argv[1])
+
+	classes = int(sys.argv[2])
+
+	if classes !=5 and classes != 3:
+		print("Class count can either be 3 or 5")
+		sys.exit()
+
 	'''Create Logistic Regression model and run'''
-	model = LogisticRegression("reviews.csv", 5)
+	model = LogisticRegression(filepath, classes)
 
 	model.run_model()
 
@@ -186,7 +205,7 @@ if __name__ == "__main__":
 			break
 		if review != "":
 			clean_review = get_clean_review(str(review))
-			rating = model.predict_rating(clean_review)
+			rating = model.predict_new_review_rating(clean_review)
 
 			print("Rating: " + str(rating))
 

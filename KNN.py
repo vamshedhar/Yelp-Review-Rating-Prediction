@@ -9,7 +9,13 @@ from operator import itemgetter
 
 import math
 import nltk
+import sys
+import re
+from nltk.corpus import stopwords
 
+
+def load_stopwords():
+	return set(stopwords.words("english"))
 
 def get_clean_review(raw_review):
 	PorterStemmer = nltk.stem.PorterStemmer()
@@ -63,11 +69,11 @@ class KNN:
 			return intRating
 		else:
 			if intRating <= 2:
-				return 0
-			elif intRating == 3:
 				return 1
-			else:
+			elif intRating == 3:
 				return 2
+			else:
+				return 3
 	''' Function to load data from csv file and prepare input data structures'''
 	def load_data(self):
 		print ("Loading data fron File:")
@@ -152,8 +158,21 @@ class KNN:
 
 if __name__ == "__main__":
 
+	if len(sys.argv) != 3:
+		print("Please give valid inputs arguments!")
+		print("python Model.py <inputfile> <classcount>")
+		sys.exit()
+
+	filepath = str(sys.argv[1])
+
+	classes = int(sys.argv[2])
+
+	if classes !=5 and classes != 3:
+		print("Class count can either be 3 or 5")
+		sys.exit()
+
 	'''Create K Nearest Neighbours model and run'''
-	model = KNN("reviews.csv", 5)
+	model = KNN(filepath, classes)
 
 	model.run_model()
 
@@ -167,7 +186,4 @@ if __name__ == "__main__":
 			rating = model.predict_rating(clean_review)
 
 			print("Rating: " + str(rating))
-
-
-
 

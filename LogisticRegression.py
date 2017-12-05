@@ -144,7 +144,7 @@ class LogisticRegression:
 		print('Accuracy from sk-learn: {0}'.format(clf.score(X_test, y_test)))
 
 	def predict_rating(self, review):
-		new_reviews = self.reviews + ["amazing food great service"]
+		new_reviews = self.reviews + [review]
 		tfidf_vectorizer = TfidfVectorizer(max_df=0.90, max_features=500, stop_words='english', use_idf=True, tokenizer=nltk.word_tokenize, ngram_range=(2,2))
 		tfidf_data = tfidf_vectorizer.fit_transform(new_reviews)
 		f = tfidf_data.todense()[tfidf_data.shape[0] - 1]
@@ -159,9 +159,12 @@ if __name__ == "__main__":
 	model.run_model()
 
 	review = ""
-	while (review.lower() != "quit"):
+	while (True):
 		review = input("Please enter a review to predict: ")
-		rating = model.predict_rating(str(review))
+		if review.lower() == "quit":
+			break
+		if review != "":	
+			rating = model.predict_rating(str(review))
 
-		print("Rating: " + str(rating))
+			print("Rating: " + str(rating))
 

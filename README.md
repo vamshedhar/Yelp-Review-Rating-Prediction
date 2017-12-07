@@ -16,11 +16,29 @@
  - [Observations](#observations)
  - [Future Enhancements](#future-enhancements)
  - [References](#references)
+ 
+ 
 
+## Algorithms
+One of the categories that our project could fall under is definitely the supervised
+learning. The main reason for this is that a prior knowledge of the target variable is already known, that needs to be predicted at the end of the project. To train our prediction models, we used three supervised learning algorithms.
+
+### Naive Bayes
+Logistic regression is a simple classification algorithm for learning to predict a discrete variable such as predicting whether a grid of pixel intensities represents a “0” digit or a “1” digit. Here we use a hypothesis class to try to predict the probability that a given sample belongs to the class “1” versus the probability that it belongs to the class “0”. Specifically, we will try to learn a function of the form:
+
+	<center>P(y=1|x) = hθ(x) = 1/1+exp(-θTx)</center>
+	<center>P(y=0|x) = 1- P(y=1|x)</center>
+
+
+### K- Nearest Neighbours
+### Logistic Regression
 
 ## Results and Analysis
+We built models for both 3-class and 5-class classification problem using above 3
+supervised learning models. For 3-class classification, we programmatically constructed Good, Average and Bad classes from review labels.
 
 ### Naive Bayes Output
+
 ### K- Nearest Neighbours Output
 ### Logistic Regression Output
 

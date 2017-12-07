@@ -81,31 +81,31 @@ supervised learning models. For 3-class classification, we programmatically cons
 
 #### 3-Class output
 
-<img src="https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/NB%203.png" alt="Naive Bayes 3 Class Output" style="width: 100px;" />
+<img src="https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/NB%203.png" alt="Naive Bayes 3 Class Output" width="400" />
 
 #### 5-Class output
 
-<img src="https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/NB%205.png" alt="Naive Bayes 5 Class Output" />
+<img src="https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/NB%205.png" alt="Naive Bayes 5 Class Output" width="400" />
 
 ### K- Nearest Neighbours Output
 
 #### 3-Class output
 
-<img src="https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/KNN%203.png" alt="K- Nearest Neighbours 3 Class Output" />
+<img src="https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/KNN%203.png" alt="K- Nearest Neighbours 3 Class Output" width="400" />
 
 #### 5-Class output
 
-<img src="https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/KNN%205.png" alt="K- Nearest Neighbours 5 Class Output" />
+<img src="https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/KNN%205.png" alt="K- Nearest Neighbours 5 Class Output" width="400" />
 
 ### Logistic Regression Output
 
 #### 3-Class output
 
-<img src="https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/LR%203.png" alt="Logistic Regression 3 Class Output" />
+<img src="https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/LR%203.png" alt="Logistic Regression 3 Class Output" width="400" />
 
 #### 5-Class output
 
-<img src="https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/LR%205.png" alt="Logistic Regression 5 Class Output" />
+<img src="https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/LR%205.png" alt="Logistic Regression 5 Class Output" width="400" />
 
 
 ## Observations

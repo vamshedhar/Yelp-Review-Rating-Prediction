@@ -27,14 +27,16 @@ learning. The main reason for this is that a prior knowledge of the target varia
 Naive Bayes (Ng and Jordan, 2002) classifier makes the Naive Bayes assumption (i.e. it assumes conditional independence between any pair of features given some class) to model the joint probability P(r, s) for any feature vector r and star rating s. Then, given a new feature vector r<sup>∗</sup> for a new review r<sup>∗</sup>, the joint probability function is computed for all values of s, and the s value corresponding to the highest probability is output as the final class label for review r<sup>∗</sup>.
 
 The multinomial Naive Bayes(which assumes that P(r<sub>i</sub>|s) is a multinomial distribution for all i) with smoothing has been implemented. To classify, we calculated probabilities of the review belonging to each rating and then selected the class value with the highest probability. We have performed computations by summing logs of probabilities rather than multiplying probabilities for underflow prevention. We ran this model for smoothing factor - alpha ranging from 1 to 5 and found that we had better results for alpha = 1; so we’re considering alpha as 1 for our model.
-<center>![Naive Bayes Formula](https://shirishkadam.files.wordpress.com/2016/04/selection_005.png?w=760)</center>
+<center>
+	![Naive Bayes Formula](https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/NB%20Formula.png)
+</center>
 
 ### K- Nearest Neighbours
 K nearest neighbors is a supervised classification algorithm that uses all available data samples which classifies a new sample based on a similarity measure. There are many such similarity measures namely: Euclidean Distance, Hamming Distance, Cosine Similarity etc. Since we are working with textual data Hamming Distance best suits as the similarity measure. Hamming distance between two strings is the number of positions at which the corresponding character are different. In other words, it measures the minimum number of substitutions
 required to change one string to the other or the minimum number of errors that could have transformed one string into the other.
 When a new sample is to be classified, we consider a majority vote of its neighbors, with the sample being assigned to the class that is most common amongst its K nearest neighbors measured using Hamming Distance.
 <ceter>
-![K-Nearesrt Neghboure](https://www.mathworks.com/matlabcentral/mlc-downloads/downloads/submissions/63621/versions/1/screenshot.gif)
+![K-Nearesrt Neghboure](https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/KNN.gif)
 </center>
 
 ### Logistic Regression
@@ -46,7 +48,7 @@ The function 1/1+exp(-z) is often called the “sigmoid” or “logistic” fun
 <center>θ = θ + alpha * Σ x<sub>i</sub> (hθ(x<sub>i</sub>) − y<sub>i</sub>)</center>
 To perform multi-class Logistic Regression, we used one Vs all strategy. This strategy involves training a single classifier per class, with the samples of that class as positive samples and all other samples as negatives. While predicting a class for test sample we apply all classifiers to the unseen sample and predict the label k for which the corresponding classifier reports the highest probability score.
 <center>
-![Logistic Regression](https://houxianxu.github.io/images/logisticRegression/4.png)
+![Logistic Regression](https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/LR.png)
 </center>
 
 ## Results and Analysis

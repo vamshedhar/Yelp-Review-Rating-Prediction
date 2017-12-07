@@ -17,7 +17,32 @@
  - [Future Enhancements](#future-enhancements)
  - [References](#references)
  
+## Introduction
+The growth of the World Wide Web has resulted in troves of reviews for products we wish to purchase, destinations we may want to travel to, and decisions we make on a day to day basis. Using machine learning techniques to infer the polarity of text-based comments is of great importance in this age of information. While there have been many successful attempts at binary sentiment analysis of text-based content, fewer attempts have been made to classify texts into more granular sentiment classes. The aim of this project is to predict the star rating of
+a user’s comment about a restaurant on a scale of 1, 2, 3 …to 5. Though a user self-classifies a comment on a scale of 1 to 5 in our dataset from Yelp, this research can potentially be applied to settings where a comment about a restaurant is available, but no corresponding star rating is (i.e. the sentiment expressed in review about a restaurant).
  
+## Dataset
+### Data collection
+The obtained data-set is in the JSON format containing 6 million records. Some of the key statistics of [Yelp dataset](https://www.yelp.com/dataset/challenge) are as follows:
+
+	Businesses       - 156,639
+	Check-ins        - 135,148
+	Users            - 1,183,362
+	Tip              - 1,028,802
+	Reviews          - 4,736,897
+### Data Processing
+As the part of the initial analysis, we considered Restaurant business and analyzed reviews of this business across multiple cities. Las Vegas had 8,49,883 records which accounts for 40% of total dataset, so we considered LasVegas city reviews as the input dataset.
+
+As the part of next step - dataset preprocessing, actions taken were
+
+ - Cleaning and Eliminating foreign language reviews
+ - Removing stop words
+ - Stemming
+ - Lemmatization
+ - Bi-gram technique
+
+For eliminating stop words, we used nltk stopwords library. For stemming, we have made use of the porter’s stemming algorithm to continue with the process of stemming the words.This process helped to get to the root form of every word which simplifies the classification process as the stemmer reduces a particular word to its dictionary form and can, therefore, represent most words in the data- set and avoid redundancy. We also tried to do lemmatization, but lemmatization on words “worst” and “bad” yielded “bad”. In our 5 class classification, we needed
+to restore the degree of negativity in review text to correctly classify reviews. As the part of next step, we considered uni-gram, bi-gram(because “good” and “not good” holds totally different meaning in our context) and the combination of both to extract features from review text and evaluated accuracies with each of these techniques.
 
 ## Algorithms
 One of the categories that our project could fall under is definitely the supervised
@@ -30,7 +55,7 @@ The multinomial Naive Bayes(which assumes that P(r<sub>i</sub>|s) is a multinomi
 
 ![Naive Bayes Formula](https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/NB%20Formula.png)
 
-### K- Nearest Neighbours
+### K-Nearest Neighbours
 K nearest neighbors is a supervised classification algorithm that uses all available data samples which classifies a new sample based on a similarity measure. There are many such similarity measures namely: Euclidean Distance, Hamming Distance, Cosine Similarity etc. Since we are working with textual data Hamming Distance best suits as the similarity measure. Hamming distance between two strings is the number of positions at which the corresponding character are different. In other words, it measures the minimum number of substitutions
 required to change one string to the other or the minimum number of errors that could have transformed one string into the other.
 When a new sample is to be classified, we consider a majority vote of its neighbors, with the sample being assigned to the class that is most common amongst its K nearest neighbors measured using Hamming Distance.
@@ -78,3 +103,4 @@ information( lemma of word “worst”(class-1) is “bad”(class-2))
 3. https://cseweb.ucsd.edu/~jmcauley/cse255/reports/fa15/017.pdf
 4. https://pdfs.semanticscholar.org/ce23/988aa1830c0b343e64234f318f28b91108d3.pdf
 5. http://cs229.stanford.edu/proj2011/MehtaPhilipScariaPredicting%20Star%20Ratings%20from%20Movie%20Review%20Comments.pdf
+

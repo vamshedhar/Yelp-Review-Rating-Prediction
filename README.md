@@ -79,8 +79,30 @@ supervised learning models. For 3-class classification, we programmatically cons
 
 ### Naive Bayes Output
 
+#### 3-Class output
+
+![Naive Bayes 3 Class Output](https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/NB%203.png)
+
+#### 5-Class output
+![Naive Bayes 5 Class Output](https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/NB%205.png)
+
 ### K- Nearest Neighbours Output
+
+#### 3-Class output
+
+![K- Nearest Neighbours 3 Class Output](https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/KNN%203.png)
+
+#### 5-Class output
+![K- Nearest Neighbours 5 Class Output](https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/KNN%205.png)
+
 ### Logistic Regression Output
+
+#### 3-Class output
+
+![Logistic Regression 3 Class Output](https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/LR%203.png)
+
+#### 5-Class output
+![Logistic Regression 5 Class Output](https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/LR%205.png)
 
 
 ## Observations

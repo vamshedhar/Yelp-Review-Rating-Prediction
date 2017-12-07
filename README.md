@@ -53,14 +53,14 @@ Naive Bayes (Ng and Jordan, 2002) classifier makes the Naive Bayes assumption (i
 
 The multinomial Naive Bayes(which assumes that P(r<sub>i</sub>|s) is a multinomial distribution for all i) with smoothing has been implemented. To classify, we calculated probabilities of the review belonging to each rating and then selected the class value with the highest probability. We have performed computations by summing logs of probabilities rather than multiplying probabilities for underflow prevention. We ran this model for smoothing factor - alpha ranging from 1 to 5 and found that we had better results for alpha = 1; so we’re considering alpha as 1 for our model.
 
-![Naive Bayes Formula](https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/NB%20Formula.png)
+<img src="https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/NB%20Formula.png" alt="Naive Bayes Formula" width="400" />
 
 ### K-Nearest Neighbours
 K nearest neighbors is a supervised classification algorithm that uses all available data samples which classifies a new sample based on a similarity measure. There are many such similarity measures namely: Euclidean Distance, Hamming Distance, Cosine Similarity etc. Since we are working with textual data Hamming Distance best suits as the similarity measure. Hamming distance between two strings is the number of positions at which the corresponding character are different. In other words, it measures the minimum number of substitutions
 required to change one string to the other or the minimum number of errors that could have transformed one string into the other.
 When a new sample is to be classified, we consider a majority vote of its neighbors, with the sample being assigned to the class that is most common amongst its K nearest neighbors measured using Hamming Distance.
 
-![K-Nearesrt Neghboure](https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/KNN.gif)
+<img src="https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/KNN.gif" alt="K-Nearesrt Neghboure" width="400" />
 
 ### Logistic Regression
 Logistic regression is a simple classification algorithm for learning to predict a discrete variable such as predicting whether a grid of pixel intensities represents a “0” digit or a “1” digit. Here we use a hypothesis class to try to predict the probability that a given sample belongs to the class “1” versus the probability that it belongs to the class “0”. Specifically, we will try to learn a function of the form:
@@ -71,7 +71,7 @@ The function 1/1+exp(-z) is often called the “sigmoid” or “logistic” fun
 <center>θ = θ + alpha * Σ x<sub>i</sub> (hθ(x<sub>i</sub>) − y<sub>i</sub>)</center>
 To perform multi-class Logistic Regression, we used one Vs all strategy. This strategy involves training a single classifier per class, with the samples of that class as positive samples and all other samples as negatives. While predicting a class for test sample we apply all classifiers to the unseen sample and predict the label k for which the corresponding classifier reports the highest probability score.
 
-![Logistic Regression](https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/LR.png)
+<img src="https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/LR.png" alt="Logistic Regression" width="400" />
 
 ## Results and Analysis
 We built models for both 3-class and 5-class classification problem using above 3

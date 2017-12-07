@@ -24,14 +24,30 @@ One of the categories that our project could fall under is definitely the superv
 learning. The main reason for this is that a prior knowledge of the target variable is already known, that needs to be predicted at the end of the project. To train our prediction models, we used three supervised learning algorithms.
 
 ### Naive Bayes
-Logistic regression is a simple classification algorithm for learning to predict a discrete variable such as predicting whether a grid of pixel intensities represents a “0” digit or a “1” digit. Here we use a hypothesis class to try to predict the probability that a given sample belongs to the class “1” versus the probability that it belongs to the class “0”. Specifically, we will try to learn a function of the form:
+Naive Bayes (Ng and Jordan, 2002) classifier makes the Naive Bayes assumption (i.e. it assumes conditional independence between any pair of features given some class) to model the joint probability P(r, s) for any feature vector r and star rating s. Then, given a new feature vector r<sup>∗</sup> for a new review r<sup>∗</sup>, the joint probability function is computed for all values of s, and the s value corresponding to the highest probability is output as the final class label for review r<sup>∗</sup>.
 
-	<center>P(y=1|x) = hθ(x) = 1/1+exp(-θTx)</center>
-	<center>P(y=0|x) = 1- P(y=1|x)</center>
-
+The multinomial Naive Bayes(which assumes that P(r<sub>i</sub>|s) is a multinomial distribution for all i) with smoothing has been implemented. To classify, we calculated probabilities of the review belonging to each rating and then selected the class value with the highest probability. We have performed computations by summing logs of probabilities rather than multiplying probabilities for underflow prevention. We ran this model for smoothing factor - alpha ranging from 1 to 5 and found that we had better results for alpha = 1; so we’re considering alpha as 1 for our model.
+<center>![Naive Bayes Formula](https://shirishkadam.files.wordpress.com/2016/04/selection_005.png?w=760)</center>
 
 ### K- Nearest Neighbours
+K nearest neighbors is a supervised classification algorithm that uses all available data samples which classifies a new sample based on a similarity measure. There are many such similarity measures namely: Euclidean Distance, Hamming Distance, Cosine Similarity etc. Since we are working with textual data Hamming Distance best suits as the similarity measure. Hamming distance between two strings is the number of positions at which the corresponding character are different. In other words, it measures the minimum number of substitutions
+required to change one string to the other or the minimum number of errors that could have transformed one string into the other.
+When a new sample is to be classified, we consider a majority vote of its neighbors, with the sample being assigned to the class that is most common amongst its K nearest neighbors measured using Hamming Distance.
+<ceter>
+![K-Nearesrt Neghboure](https://www.mathworks.com/matlabcentral/mlc-downloads/downloads/submissions/63621/versions/1/screenshot.gif)
+</center>
+
 ### Logistic Regression
+Logistic regression is a simple classification algorithm for learning to predict a discrete variable such as predicting whether a grid of pixel intensities represents a “0” digit or a “1” digit. Here we use a hypothesis class to try to predict the probability that a given sample belongs to the class “1” versus the probability that it belongs to the class “0”. Specifically, we will try to learn a function of the form:
+<center>P(y=1|x) = h<sub>θ</sub>(x) = 1/1+exp(-θ<sup>T</sup>x)</center>
+<center>P(y=0|x) = 1- P(y=1|x)</center>
+The function 1/1+exp(-z) is often called the “sigmoid” or “logistic” function – it is an S-shaped function that “squashes” the value of z into the range [0,1] so that we may interpret h<sub>θ</sub>(x) as a probability. Our goal is to search for a value of θ so that the probability P(y=1|x)=h<sub>θ</sub>(x) is large when x belongs to the “1” class and small when x belongs to the “0” class (so that P(y=0|x) is large). We can learn to classify our training data by minimizing the cost function to find the best choice of θ. To estimate the θ we used following equation:	
+		
+<center>θ = θ + alpha * Σ x<sub>i</sub> (hθ(x<sub>i</sub>) − y<sub>i</sub>)</center>
+To perform multi-class Logistic Regression, we used one Vs all strategy. This strategy involves training a single classifier per class, with the samples of that class as positive samples and all other samples as negatives. While predicting a class for test sample we apply all classifiers to the unseen sample and predict the label k for which the corresponding classifier reports the highest probability score.
+<center>
+![Logistic Regression](https://houxianxu.github.io/images/logisticRegression/4.png)
+</center>
 
 ## Results and Analysis
 We built models for both 3-class and 5-class classification problem using above 3
@@ -63,4 +79,3 @@ information( lemma of word “worst”(class-1) is “bad”(class-2))
 3. https://cseweb.ucsd.edu/~jmcauley/cse255/reports/fa15/017.pdf
 4. https://pdfs.semanticscholar.org/ce23/988aa1830c0b343e64234f318f28b91108d3.pdf
 5. http://cs229.stanford.edu/proj2011/MehtaPhilipScariaPredicting%20Star%20Ratings%20from%20Movie%20Review%20Comments.pdf
-

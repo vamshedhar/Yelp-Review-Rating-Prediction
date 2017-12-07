@@ -81,7 +81,7 @@ supervised learning models. For 3-class classification, we programmatically cons
 
 #### 3-Class output
 
-![Naive Bayes 3 Class Output](https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/NB%203.png)
+![Naive Bayes 3 Class Output](https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/NB%203.png =x100)
 
 #### 5-Class output
 ![Naive Bayes 5 Class Output](https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/NB%205.png)

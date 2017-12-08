@@ -173,9 +173,15 @@ One of the categories that our project could fall under is definitely the superv
 learning. The main reason for this is that a prior knowledge of the target variable is already known, that needs to be predicted at the end of the project. To train our prediction models, we used three supervised learning algorithms.
 
 ### Naive Bayes
-Naive Bayes (Ng and Jordan, 2002) classifier makes the Naive Bayes assumption (i.e. it assumes conditional independence between any pair of features given some class) to model the joint probability P(r, s) for any feature vector r and star rating s. Then, given a new feature vector r<sup>∗</sup> for a new review r<sup>∗</sup>, the joint probability function is computed for all values of s, and the s value corresponding to the highest probability is output as the final class label for review r<sup>∗</sup>.
 
-The multinomial Naive Bayes(which assumes that P(r<sub>i</sub>|s) is a multinomial distribution for all i) with smoothing has been implemented. To classify, we calculated probabilities of the review belonging to each rating and then selected the class value with the highest probability. We have performed computations by summing logs of probabilities rather than multiplying probabilities for underflow prevention. We ran this model for smoothing factor - alpha ranging from 1 to 5 and found that we had better results for alpha = 1; so we’re considering alpha as 1 for our model.
+
+The model was build on two assumptions namely Bag of Words assumption (Assume position doesn’t matter) and Conditional Independence (Assume the feature probabilities P(x<sub>i</sub>|c<sub>j</sub> ) are independent given the class c).The model computes class probabilities for each word in feature vector for a given class (a star rating). We have used Counter class of python for calculating word frequencies which will output a dictionary with each word as key and their counts as values. 
+
+When a new feature vector(review) is given, the model calculates the probability for each class by summing all logarithmic probabilities of each word and previous class probability.
+Multiplying many probabilities can result in floating-point underflow. We have used log space to reduce the underflow problem.
+Then the model assigns a star rating for the given review to the class corresponding to maximum probability.
+
+Laplace smoothing is applied to handle new words that does not exist in the training data. We have tested our model for α ranging from 1 to 5 and observed better results for α=1 and so, we have considered 1 as smoothing Laplace for our model.
 
 <img src="https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/NB%20Formula.png" alt="Naive Bayes Formula" width="400" />
 
@@ -202,6 +208,17 @@ The function 1/1+exp(-z) is often called the “sigmoid” or “logistic” fun
 To perform multi-class Logistic Regression, we used one Vs all strategy. This strategy involves training a single classifier per class, with the samples of that class as positive samples and all other samples as negatives. While predicting a class for test sample we apply all classifiers to the unseen sample and predict the label k for which the corresponding classifier reports the highest probability score.
 
 <img src="https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/LR.png" alt="Logistic Regression" width="400" />
+
+We performed data cleaning which include removal of punctuations, stop words and stemming (using python library function Porter Stemming) and extracted meaningful content from each review. We then constructed feature vector for each review in the dataset using python library function TfidfVectorizer imported from the package sklearn.feature_extraction.text. Inputs for TfidfVectorizer: maximum document frequency, maximum features to be extracted, language to remove stop words and ngram range.We have considered following values for inputs: 
+
+	max_df=0.90 (To eliminate words with maximum frequency)
+	max_features=500 (To retain words with highest importance and limit dimensions of the feature vectors avoiding memory out of space exception)
+	stop_words='english'
+	ngram_range= (1,2) (We have chosen unigrams and bigrams to capture the effect of phrases like “not good”)
+
+Tuning Parameters: As a convergence criterion in finding beta coefficients we have fixed number of iterations to be run. For Gradient Descent to work we must set the alpha (learning rate) to an appropriate value. This parameter determines how fast or slow we will move towards the optimal coefficients. If the λ is very large we might skip the optimal solution. If it is too small, we might need too many iterations to converge to the best values. We ran our model for different alpha values and observed highest accuracy for alpha=0.001 and number of iterations=10.
+
+To test our model, we take a review from user, add it to the training set and build tfidf vectors again using the vectorizer function mentioned above since it does not keep track of idfs of all the words.
 
 #### Logistic Regression in action
 <img src="https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/LR.gif" alt="Logistic Regression in Action" width="800" />

@@ -14,7 +14,6 @@
     - [K- Nearest Neighbours Output](#k-nearest-neighbours-output)
 	- [Logistic Regression Output](#logistic-regression-output)
  - [Observations](#observations)
- - [Future Enhancements](#future-enhancements)
  - [References](#references)
  
 ## Introduction
@@ -193,6 +192,12 @@ K nearest neighbors is a supervised classification algorithm that uses all avail
 required to change one string to the other or the minimum number of errors that could have transformed one string into the other.
 When a new sample is to be classified, we consider a majority vote of its neighbors, with the sample being assigned to the class that is most common amongst its K nearest neighbors measured using Hamming Distance.
 
+The process of choosing k value is extremely critical in the entire process. According to our research [1] we found that when k is around √N  where N is number of training instances, KNN works better. So, we initialized k to  √N ; ran and compared model for a delta change of 5 to initial value.
+We split input review into words and chose Hamming distance measure to calculate distance between words in reviews. We tried considering TF-IDF vectors for reviews instead of just stemmed words, but TF-IDF matrix being very sparse matrix required strategical decision to be made to reduce computations.
+We randomly split input dataset into training and test data in the ratio 0.009 and 0.001. Higher ratio value of test data requires very higher order cartesian products to be calculated because we were not employing feature elimination methods.
+We observed that we could have implemented following feature extraction techniques and improved the performance of KNN:
+Instead of considering just stemmed words of review, we could’ve considered TF-IDF values with bi-gram technique and therefore use a more contextually useful distance measure like cosine similarity.
+
 <img src="https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/KNN.gif" alt="K-Nearesrt Neghboure" width="400" />
 
 #### KNN in action
@@ -222,6 +227,10 @@ To test our model, we take a review from user, add it to the training set and bu
 
 #### Logistic Regression in action
 <img src="https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/LR.gif" alt="Logistic Regression in Action" width="800" />
+
+
+**Note:** We are passing number of classes as the command line argument. We can either give it as 3-class problem or 5-class problem and the algorithm does the further computations based on the given data. After the computations of the algorithm are done it prompts user to enter a review for which it gives the computed rating.
+
 
 ## Results and Analysis
 We built models for both 3-class and 5-class classification problem using above 3
@@ -259,17 +268,16 @@ supervised learning models. For 3-class classification, we programmatically cons
 
 
 ## Observations
- - KNN performed better when k value is chosen around square root of N(number of records in training data)
- - Built models performed better when bi-gram is chosen
- - Degree of positivity or negativity was observed to be very important for 5-class
-classification problem. However, lemmatization of words couldn’t preserve this
-information( lemma of word “worst”(class-1) is “bad”(class-2))
- - Because of conditional independence assumption of Naive Bayes, model failed to capture the difference between the phrases “good” and “not good”
+ - Among the three models built, Logistic Regression outperformed giving highest accuracy since TFIDFs are considered while constructing feature vectors where as in KNN we just considered the text review and hamming distance between the reviews and in Naïve Bayes we just considered word counts.
 
+ - We started with 5-class problem and noticed that the words in 4-star, 5-star categories and words in 1-star, 2-star categories were very similar. So, we narrowed down our classification to a 3-class problem merging 1-star and 2-star into one class, 4-star and 5-star rating into second class and 3-star ratings as third class.
 
-## Future Enhancements
- - Refine KNN model by using different similarity measurements like cosine and minkowski distance
- - Perform better feature extraction and reduce dimensionality for improved performance
+ - Degree of positivity or negativity was observed to be very important for 5-class classification problem. However, lemmatization of words couldn’t preserve this information (lemma of word “worst” (class-1) is “bad” (class-2)).
+
+ - Because of conditional independence assumption of Naive Bayes, model failed to capture the difference between the phrases “good” and “not good”.
+
+ - Built models performed better when bi-gram is chosen.
+
 
 ## References
 

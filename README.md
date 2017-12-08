@@ -152,10 +152,21 @@ As the part of next step - dataset preprocessing, actions taken were
  - Removing stop words
  - Stemming
  - Lemmatization
- - Bi-gram technique
 
-For eliminating stop words, we used nltk stopwords library. For stemming, we have made use of the porter’s stemming algorithm to continue with the process of stemming the words.This process helped to get to the root form of every word which simplifies the classification process as the stemmer reduces a particular word to its dictionary form and can, therefore, represent most words in the data- set and avoid redundancy. We also tried to do lemmatization, but lemmatization on words “worst” and “bad” yielded “bad”. In our 5 class classification, we needed
-to restore the degree of negativity in review text to correctly classify reviews. As the part of next step, we considered uni-gram, bi-gram(because “good” and “not good” holds totally different meaning in our context) and the combination of both to extract features from review text and evaluated accuracies with each of these techniques.
+#### Cleaning and Eliminating foreign language reviews
+We observed that in the actual dataset there were reviews businesses in Mexico. Some of them were in languages other than English. So we had to remove such reviews. For this, we used google's [langdetect](https://pypi.python.org/pypi/langdetect?) library. But later when we split the data based on the cities there weren't any reviews in foreign languages. So in the actual project, we didn't need to do this.
+
+#### Removing Stop Words
+Plain English text consists of a lot of stop words like *the*, *a*, *as*, *of* etc., which have very less significance in the review. We had to remove those words from the review text. We [NLKT stop words](https://pythonspot.com/en/nltk-stop-words/) library to get the stop words and remove them from the review. 
+
+#### Lemmatization
+Lemmatization usually refers to doing things properly with the use of a vocabulary and morphological analysis of words, normally aiming to remove inflectional endings only and to return the base or dictionary form of a word, which is known as the lemma. For example, in English, the verb 'to walk' may appear as 'walk', 'walked', 'walks', 'walking'. The base form, 'walk', that one might look up in a dictionary, is called the lemma for the word. We used lemma words for words in the review. we used [Word Net Lemmatizer](http://www.nltk.org/_modules/nltk/stem/wordnet.html) for this purpose.
+
+#### Stemming
+Stemming is the process of reducing derived words to their word stem. Words like "stems", "stemmer", "stemming", "stemmed" as based on "stem". For better performance of the algorithm and avoid redundancy in the dataset, we used converted each word in a review to its steam. For this used [Porter Stemmer](http://www.nltk.org/howto/stem.html) for stemming.
+
+
+On the city datasets, we removed stop words first then applied lemmatization and finally stemming. At each level, we created a separate CSV file and another file with just stopwords and stemming. We performed our algorithms each of them separately to compare the effects of those preprocessing methods on accuracy. We observed that but lemmatization on words “worst” and “bad” yielded “bad”. In our 5 class classification, we needed to restore the degree of negativity in review text to correctly classify reviews. Hence we excluded lemmatization from our final process.
 
 ## Algorithms
 One of the categories that our project could fall under is definitely the supervised

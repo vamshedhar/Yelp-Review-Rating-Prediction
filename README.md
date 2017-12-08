@@ -1,4 +1,4 @@
-# PREDICTING​ ​YELP​ ​FOOD​ ​REVIEWS’​ ​RATINGS
+# PREDICTING YELP FOOD REVIEWS’ RATINGS
 
 ## Table of Contents
  - [Introduction](#introduction)
@@ -31,7 +31,120 @@ The obtained data-set is in the JSON format containing 6 million records. Some o
 	Tip              - 1,028,802
 	Reviews          - 4,736,897
 ### Data Processing
-As the part of the initial analysis, we considered Restaurant business and analyzed reviews of this business across multiple cities. Las Vegas had 8,49,883 records which accounts for 40% of total dataset, so we considered LasVegas city reviews as the input dataset.
+Yelp consists of several categories of businesses like Restaurants, Hotels, Home Service etc., of which restaurants contributed to more than 60%. As the part of the initial analysis, we considered Restaurant business and analyzed reviews of this business across multiple cities. We only used businesses and reviews data from the dataset.
+
+#### Sample business object
+
+    {
+	    // string, 22 character unique string business id
+	    "business_id": "tnhfDv5Il8EaGSXZGiuQGg",
+
+	    // string, the business's name
+	    "name": "Garaje",
+
+	    // string, the neighborhood's name
+	    "neighborhood": "SoMa",
+
+	    // string, the full address of the business
+	    "address": "475 3rd St",
+
+	    // string, the city
+	    "city": "San Francisco",
+
+	    // string, 2 character state code, if applicable
+	    "state": "CA",
+
+	    // string, the postal code
+	    "postal code": "94107",
+
+	    // float, latitude
+	    "latitude": 37.7817529521,
+
+	    // float, longitude
+	    "longitude": -122.39612197,
+
+	    // float, star rating, rounded to half-stars
+	    "stars": 4.5,
+
+	    // interger, number of reviews
+	    "review_count": 1198,
+
+	    // integer, 0 or 1 for closed or open, respectively
+	    "is_open": 1,
+
+	    // object, business attributes to values. note: some attribute values might be objects
+	    "attributes": {
+	        "RestaurantsTakeOut": true,
+	        "BusinessParking": {
+	            "garage": false,
+	            "street": true,
+	            "validated": false,
+	            "lot": false,
+	            "valet": false
+	        },
+	    },
+
+	    // an array of strings of business categories
+	    "categories": [
+	        "Mexican",
+	        "Burgers",
+	        "Gastropubs"
+	    ],
+
+	    // an object of key day to value hours, hours are using a 24hr clock
+	    "hours": {
+	        "Monday": "10:00-21:00",
+	        "Tuesday": "10:00-21:00",
+	        "Friday": "10:00-21:00",
+	        "Wednesday": "10:00-21:00",
+	        "Thursday": "10:00-21:00",
+	        "Sunday": "11:00-18:00",
+	        "Saturday": "10:00-21:00"
+	    }
+    }
+
+#### Sample review object
+
+	{
+	    // string, 22 character unique review id
+	    "review_id": "zdSx_SD6obEhz9VrW9uAWA",
+
+	    // string, 22 character unique user id, maps to the user in user.json
+	    "user_id": "Ha3iJu77CxlrFm-vQRs_8g",
+
+	    // string, 22 character business id, maps to business in business.json
+	    "business_id": "tnhfDv5Il8EaGSXZGiuQGg",
+
+	    // integer, star rating
+	    "stars": 4,
+
+	    // string, date formatted YYYY-MM-DD
+	    "date": "2016-03-09",
+
+	    // string, the review itself
+	    "text": "Great place to hang out after work: the prices are decent, and the ambience is fun. It's a bit loud, but very lively. The staff is friendly, and the food is good. They have a good selection of drinks.",
+
+	    // integer, number of useful votes received
+	    "useful": 0,
+
+	    // integer, number of funny votes received
+	    "funny": 0,
+
+	    // integer, number of cool votes received
+	    "cool": 0
+	}
+
+Firstly, the data set was in JSON format, we used some python code to convert it to CSV files. We used only `business_id`, `categories` and `city` from the business object and `review_id`, `business_id`, `text` and `stars` from the review object. Then we used [pandas](https://pandas.pydata.org/) library to perform analysis and operations on CSV file. We first joined the businesses data and the reviews data and filtered out the reviews for category restaurants.  
+
+Total review count for restaurant category came out to be 2,927,731. Then we performed analysis on city wise review count. The top five cities based on review count is as follows:
+
+	Las Vegas	-	849,883
+	Phoenix		-	302,403
+	Toronto		-	276,887
+	Scottsdale	-	164,893
+	Charlotte	-	141,281
+
+We divided the data based on cities in order to perform algorithms on whole data set and part of the dataset. From the business and review combined data, we selected only review text and start rating as our main goal is to analyze text and predict the review. We created CSV files for individual cities to perform further processing.
 
 As the part of next step - dataset preprocessing, actions taken were
 

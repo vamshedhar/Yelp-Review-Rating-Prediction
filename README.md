@@ -182,10 +182,10 @@ Then the model assigns a star rating for the given review to the class correspon
 
 Laplace smoothing is applied to handle new words that does not exist in the training data. We have tested our model for α ranging from 1 to 5 and observed better results for α=1 and so, we have considered 1 as smoothing Laplace for our model.
 
-<img src="https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/NB%20Formula.png" alt="Naive Bayes Formula" width="400" />
+<img src="https://raw.githubusercontent.com/vamshedhar/Yelp-Review-Rating-Prediction/master/images/NB%20Formula.png" alt="Naive Bayes Formula" width="400" />
 
 #### Naive Bayes in action
-<img src="https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/NB.gif" alt="Naive Bayes in Action" width="800" />
+<img src="https://raw.githubusercontent.com/vamshedhar/Yelp-Review-Rating-Prediction/master/images/NB.gif" alt="Naive Bayes in Action" width="800" />
 
 ### K-Nearest Neighbours
 K nearest neighbors is a supervised classification algorithm that uses all available data samples which classifies a new sample based on a similarity measure. There are many such similarity measures namely: Euclidean Distance, Hamming Distance, Cosine Similarity etc. Since we are working with textual data Hamming Distance best suits as the similarity measure. Hamming distance between two strings is the number of positions at which the corresponding character are different. In other words, it measures the minimum number of substitutions
@@ -198,10 +198,10 @@ We randomly split input dataset into training and test data in the ratio 0.009 a
 We observed that we could have implemented following feature extraction techniques and improved the performance of KNN:
 Instead of considering just stemmed words of review, we could’ve considered TF-IDF values with bi-gram technique and therefore use a more contextually useful distance measure like cosine similarity.
 
-<img src="https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/KNN.gif" alt="K-Nearesrt Neghboure" width="400" />
+<img src="https://raw.githubusercontent.com/vamshedhar/Yelp-Review-Rating-Prediction/master/images/KNN.gif" alt="K-Nearesrt Neghboure" width="400" />
 
 #### KNN in action
-<img src="https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/KNN%20in%20Action.gif" alt="KNN in Action" width="800" />
+<img src="https://raw.githubusercontent.com/vamshedhar/Yelp-Review-Rating-Prediction/master/images/KNN%20in%20Action.gif" alt="KNN in Action" width="800" />
 
 ### Logistic Regression
 Logistic regression is a simple classification algorithm for learning to predict a discrete variable such as predicting whether a grid of pixel intensities represents a “0” digit or a “1” digit. Here we use a hypothesis class to try to predict the probability that a given sample belongs to the class “1” versus the probability that it belongs to the class “0”. Specifically, we will try to learn a function of the form:
@@ -212,7 +212,7 @@ The function 1/1+exp(-z) is often called the “sigmoid” or “logistic” fun
 <center>θ = θ + alpha * Σ x<sub>i</sub> (hθ(x<sub>i</sub>) − y<sub>i</sub>)</center>
 To perform multi-class Logistic Regression, we used one Vs all strategy. This strategy involves training a single classifier per class, with the samples of that class as positive samples and all other samples as negatives. While predicting a class for test sample we apply all classifiers to the unseen sample and predict the label k for which the corresponding classifier reports the highest probability score.
 
-<img src="https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/LR.png" alt="Logistic Regression" width="400" />
+<img src="https://raw.githubusercontent.com/vamshedhar/Yelp-Review-Rating-Prediction/master/images/LR.png" alt="Logistic Regression" width="400" />
 
 We performed data cleaning which include removal of punctuations, stop words and stemming (using python library function Porter Stemming) and extracted meaningful content from each review. We then constructed feature vector for each review in the dataset using python library function TfidfVectorizer imported from the package sklearn.feature_extraction.text. Inputs for TfidfVectorizer: maximum document frequency, maximum features to be extracted, language to remove stop words and ngram range.We have considered following values for inputs: 
 
@@ -226,7 +226,7 @@ Tuning Parameters: As a convergence criterion in finding beta coefficients we ha
 To test our model, we take a review from user, add it to the training set and build tfidf vectors again using the vectorizer function mentioned above since it does not keep track of idfs of all the words.
 
 #### Logistic Regression in action
-<img src="https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/LR.gif" alt="Logistic Regression in Action" width="800" />
+<img src="https://raw.githubusercontent.com/vamshedhar/Yelp-Review-Rating-Prediction/master/images/LR.gif" alt="Logistic Regression in Action" width="800" />
 
 
 **Note:** We are passing number of classes as the command line argument. We can either give it as 3-class problem or 5-class problem and the algorithm does the further computations based on the given data. After the computations of the algorithm are done it prompts user to enter a review for which it gives the computed rating.
@@ -240,31 +240,31 @@ supervised learning models. For 3-class classification, we programmatically cons
 
 #### 3-Class output
 
-<img src="https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/NB%203.png" alt="Naive Bayes 3 Class Output" width="400" />
+<img src="https://raw.githubusercontent.com/vamshedhar/Yelp-Review-Rating-Prediction/master/images/NB%203.png" alt="Naive Bayes 3 Class Output" width="400" />
 
 #### 5-Class output
 
-<img src="https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/NB%205.png" alt="Naive Bayes 5 Class Output" width="400" />
+<img src="https://raw.githubusercontent.com/vamshedhar/Yelp-Review-Rating-Prediction/master/images/NB%205.png" alt="Naive Bayes 5 Class Output" width="400" />
 
 ### K- Nearest Neighbours Output
 
 #### 3-Class output
 
-<img src="https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/KNN%203.png" alt="K- Nearest Neighbours 3 Class Output" width="400" />
+<img src="https://raw.githubusercontent.com/vamshedhar/Yelp-Review-Rating-Prediction/master/images/KNN%203.png" alt="K- Nearest Neighbours 3 Class Output" width="400" />
 
 #### 5-Class output
 
-<img src="https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/KNN%205.png" alt="K- Nearest Neighbours 5 Class Output" width="400" />
+<img src="https://raw.githubusercontent.com/vamshedhar/Yelp-Review-Rating-Prediction/master/images/KNN%205.png" alt="K- Nearest Neighbours 5 Class Output" width="400" />
 
 ### Logistic Regression Output
 
 #### 3-Class output
 
-<img src="https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/LR%203.png" alt="Logistic Regression 3 Class Output" width="400" />
+<img src="https://raw.githubusercontent.com/vamshedhar/Yelp-Review-Rating-Prediction/master/images/LR%203.png" alt="Logistic Regression 3 Class Output" width="400" />
 
 #### 5-Class output
 
-<img src="https://raw.githubusercontent.com/vamshedhar/YelpReviewImages/master/LR%205.png" alt="Logistic Regression 5 Class Output" width="400" />
+<img src="https://raw.githubusercontent.com/vamshedhar/Yelp-Review-Rating-Prediction/master/images/LR%205.png" alt="Logistic Regression 5 Class Output" width="400" />
 
 
 ## Observations
